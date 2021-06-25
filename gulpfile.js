@@ -78,7 +78,7 @@ const cleanCSS = require('gulp-clean-css'); // 套件引入 require()
 function cleancss(){
   return src('css/allcss/*.css')
   .pipe(cleanCSS({compatibility: 'ie10'}))
-  .pipe(dest('minicss'))   // 產生一支 minicss 檔 (壓縮 style.css 檔)
+  .pipe(dest('minicss'))    // 產生一支 css/minicss 檔 (壓縮來源檔 allcss/style.css )
 }
 exports.minicss = cleancss; // gulp minicss
 
@@ -92,5 +92,22 @@ function ugjs(){
     .pipe(uglify())
     .pipe(dest('minijs'))  //  // 產生一支 minijs 檔 (壓縮 b.js 檔)
 }
-
 exports.minijs = ugjs;
+
+
+    // ==================================================================
+    // 先合併 -> 再壓縮  (不能同步執行)
+function concat_css(){
+    return src('css/**/*.css')
+    .pipe(concat('style.css'))
+    .pipe(dest('minicss'))      //   產生 css/minicss/style.css 檔
+}
+
+
+function mini_css(){
+    return src('minicss/style.css')   // 壓縮來源檔
+    .pipe(cleanCSS({compatibility: 'ie10'}))
+    .pipe(dest('minicss/mini/'))  //  //   產生 css/minicss/mini/style.css 檔
+}
+
+exports.all = series(concat_css , mini_css);  // 順序執行

@@ -1,1 +1,0 @@
-var b=20;function kk(k,n){return k+n}kk(2,5),console.log(b);

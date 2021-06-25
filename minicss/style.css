@@ -1,1 +1,14 @@
-.box{margin:2px;width:10px}.item{padding:2px}.kk{background-color:#f0f8ff;color:#0ff}span{font-size:large}
+.wrap{
+  width: 1200px;
+}
+.a{
+  background-color: aliceblue;
+  color: aqua;
+}
+.b{
+  width: 20px;
+  height: 10px;
+}
+span{
+  font-size: large;
+}
