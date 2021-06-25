@@ -73,12 +73,24 @@ exports.alljs = concatjs;   // // 執行指令 gulp alljs
 
       // =====================================================================
       //======= 壓縮css  ===============
-const cleanCSS = require('gulp-clean-css');
+const cleanCSS = require('gulp-clean-css'); // 套件引入 require() 
 
 function cleancss(){
   return src('css/allcss/*.css')
   .pipe(cleanCSS({compatibility: 'ie10'}))
-  .pipe(dest('minicss')) 
+  .pipe(dest('minicss'))   // 產生一支 minicss 檔 (壓縮 style.css 檔)
+}
+exports.minicss = cleancss; // gulp minicss
+
+
+    // ==============================================================
+    //======= 壓縮js  ===============
+const uglify = require('gulp-uglify');  // 套件引入 require() 
+
+function ugjs(){
+    return src('js/b.js')
+    .pipe(uglify())
+    .pipe(dest('minijs'))  //  // 產生一支 minijs 檔 (壓縮 b.js 檔)
 }
 
-exports.minicss = cleancss;
+exports.minijs = ugjs;
