@@ -31,10 +31,9 @@ function missB(cb){
     //並行
     exports.sync = parallel(missA , missB); // // 執行指令 gulp sync
 
+    
 
     // ==========================================
-
-
     //=======   合併 CSS 檔案  //   合併 JS檔案    ===============
     //  src(來源檔案).pipe(concat()).pipe(dest(目的地))
     //  * 代表所有
@@ -69,3 +68,17 @@ exports.allcss = concatcss; // 執行指令 gulp allcss
                             // a.css/b.css檔 , 若有修改後, 再執行一次 gulp allcss ,就會重新打包 style.css
 
 exports.alljs = concatjs;   // // 執行指令 gulp alljs 
+
+
+
+      // =====================================================================
+      //======= 壓縮css  ===============
+const cleanCSS = require('gulp-clean-css');
+
+function cleancss(){
+  return src('css/allcss/*.css')
+  .pipe(cleanCSS({compatibility: 'ie10'}))
+  .pipe(dest('minicss')) 
+}
+
+exports.minicss = cleancss;
