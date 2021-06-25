@@ -95,19 +95,50 @@ function ugjs(){
 exports.minijs = ugjs;
 
 
-    // ==================================================================
-    // 先合併 -> 再壓縮  (不能同步執行)
-function concat_css(){
-    return src('css/**/*.css')
-    .pipe(concat('style.css'))
-    .pipe(dest('minicss'))      //   產生 css/minicss/style.css 檔
+    // =====================================================================
+    // 先合併 -> 再壓縮  (不能同步執行)    狀況一  狀況一  狀況一  狀況一  狀況一  狀況一  狀況一狀況一  狀況一
+// function concat_css(){
+//     return src('css/**/*.css')
+//     .pipe(concat('style.css'))
+//     .pipe(dest('minicss'))             //   產生 css/minicss/style.css 檔
+// }
+// function mini_css(){
+//     return src('minicss/style.css')    //   壓縮來源檔
+//     .pipe(cleanCSS({compatibility: 'ie10'}))
+//     .pipe(dest('minicss/mini/'))       //   產生 css/minicss/mini/style.css 檔
+// }
+// exports.all = series(concat_css , mini_css);  // 順序執行
+
+
+    // 先合併 -> 再壓縮  (不能同步執行)    狀況二  狀況二  狀況二  狀況二  狀況二  狀況二  狀況二  狀況二  狀況二
+function concat_css(){               //  合併完直接壓縮 , 不產生合併檔 , 只產生壓縮檔
+  return src('css/**/*.css')
+  .pipe(concat('style.css'))
+  .pipe(cleanCSS({compatibility: 'ie10'}))
+  .pipe(dest('minicss'))             //  產生 css/minicss/style.css 檔
 }
+exports.all = series(concat_css);    //  順序執行
 
 
-function mini_css(){
-    return src('minicss/style.css')   // 壓縮來源檔
-    .pipe(cleanCSS({compatibility: 'ie10'}))
-    .pipe(dest('minicss/mini/'))  //  //   產生 css/minicss/mini/style.css 檔
+    // 合併 + 壓縮css + 更改檔名          狀況三  狀況三  狀況三  狀況三  狀況三  狀況三  狀況三  狀況三  狀況三
+    // === rename 更改檔案名稱 ===
+const rename = require('gulp-rename'); // 套件引入 require()
+function concat_css(){                 //  合併完直接壓縮 , 不產生合併檔 , 只產生壓縮檔
+  return src('css/**/*.css')
+  .pipe(concat('style.css'))           //  合併
+  .pipe(cleanCSS({compatibility: 'ie10'}))  //  壓縮
+  .pipe(rename({
+         extname: '.min.css'
+                      }))      //  更改副檔名 
+  .pipe(dest('css/'))          //  產生 css/style.min.css 檔 
+  // .pipe(dest('minicss'))    //  產生 css/minicss/style.min.css 檔
 }
+exports.all = series(concat_css);    //  順序執行
 
-exports.all = series(concat_css , mini_css);  // 順序執行
+
+
+
+
+
+
+
