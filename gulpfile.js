@@ -42,12 +42,20 @@ function missB(cb){
 var concat = require('gulp-concat');   // 套件引入 require()
 
 function concatcss(){
-    // return src(['css/**/*.css' , 'css/*.css' ,'!css/aboutus/*.css' ])
-    // .pipe(concat('style.css'))
-    // .pipe(dest('css/allcss/'))
-    return src('css/*.css')    // css 資料夾 之下 , 所有 .css檔
-    .pipe(concat('style.css')) // 透過 concat() 合併 .css檔 , 產生一支 style.css
-    .pipe(dest('css/allcss/')) // 產生的 style.css , 放在 css/allcss/ 之下
+    // 多文件(多路徑)     // 打包2個路徑的CSS檔,排除aboutus資料夾下的CSS檔
+    return src(['css/**/*.css' , 'css/*.css' ,'!css/aboutus/*.css' ])
+    .pipe(concat('style.css')) // 排除的css檔 若沒有排除 要先刪除 "style.css"
+    .pipe(dest('css/allcss/'))
+
+    // 單文件
+    // return src('css/**/*.css') // css 資料夾內aboutus/index 的資料夾之下(css下2層) ,
+    //                            // 所有 .css檔
+    // .pipe(concat('style.css')) // 透過 concat() 合併 .css檔 , 產生一支 style.css
+    // .pipe(dest('css/allcss/')) // 產生的 style.css , 放在 css/allcss/ 之下
+
+    // return src('css/*.css')    // css 資料夾 之下 , 所有 .css檔
+    // .pipe(concat('style.css')) // 透過 concat() 合併 .css檔 , 產生一支 style.css
+    // .pipe(dest('css/allcss/')) // 產生的 style.css , 放在 css/allcss/ 之下
 }
 
 function concatjs(){
