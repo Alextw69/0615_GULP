@@ -131,9 +131,39 @@ function concat_css(){                 //  合併完直接壓縮 , 不產生合�
          extname: '.min.css'
                       }))      //  更改副檔名 
   .pipe(dest('css/'))          //  產生 css/style.min.css 檔 
-  // .pipe(dest('minicss'))    //  產生 css/minicss/style.min.css 檔
+  // .pipe(dest('minicss'))    //  產生 css/minicss/style.min.css 檔 , (打包不要再放在下2層)
 }
 exports.all = series(concat_css);    //  順序執行
+
+
+      // ====================================================================================
+      // 監看任務 自動執行打包
+function watchfile(){
+    watch('css/**/*.css' ,concat_css) // 監看來源檔 , 執行的函式
+    // watch('js/**/*.js' ,任務)      // 可以同時監看 js ...
+}
+
+exports.w = watchfile;  // gulp w  / ctol + c  (跳出監看)
+
+
+// =============================================================================
+
+const sass = require('gulp-sass');  // 套件引入 require()
+
+function sass_style() {
+    return src('sass/*.scss')
+        .pipe(sass().on('error', sass.logError))  // on() , 為了顯示執行的錯誤資訊
+        .pipe(cleanCSS({compatibility: 'ie10'}))  //  壓縮
+        .pipe(dest('css'));
+}
+// exports.styles = sass_style;
+
+function watchsass(){  // 監看
+  watch(['sass/**/*.scss','sass/*.scss'] ,sass_style) // 監看來源檔 , 執行的函式
+  // watch('js/**/*.js' ,任務)      // 可以同時監看 js ...
+}
+
+exports.styles = watchsass;  // gulp w  / ctol + c  (跳出監看)
 
 
 

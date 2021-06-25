@@ -1,0 +1,1 @@
+body{margin:0;background-color:#0bf}body .wrapper{width:100%;min-width:1200px;display:flex}body .wrapper header .logo{font-size:100px;color:red}body .wrapper .item{justify-self:start}.example{display:grid;transition:all .5s;user-select:none;background:linear-gradient(to bottom,#fff,#000);animation:3s ease-in 1s infinite reverse both running slidein;animation-delay:250ms}

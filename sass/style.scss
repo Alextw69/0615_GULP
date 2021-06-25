@@ -1,0 +1,27 @@
+body {
+  margin: 0;
+  background-color: rgb(0, 187, 255);
+  .wrapper{
+      width: 100%;
+      min-width: 1200px;
+      display: flex;
+      header {
+        .logo {
+           font-size: 100px;
+           color: red;
+        }
+      }
+      .item{
+          justify-self: start;
+      }
+  }
+}
+
+.example {
+  display: grid;
+  transition: all .5s;
+  user-select: none;
+  background: linear-gradient(to bottom, white, black);
+  animation: 3s ease-in 1s infinite reverse both running slidein;
+  animation-delay: 250ms;
+}
