@@ -153,9 +153,9 @@ const sourcemaps = require('gulp-sourcemaps');// 回朔到原本開發的檔案
 
 function sass_style() {
     return src('sass/*.scss')
-        .pipe(sourcemaps.init())
+        .pipe(sourcemaps.init())  // 可以在控制台 看到檔案來源 ex: header{} ==> _header.scss
         .pipe(sass({outputStyle: 'compressed'}).on('error', sass.logError)) // on() , 為了顯示執行的錯誤資訊
-        .pipe(sourcemaps.write())
+        .pipe(sourcemaps.write()) // 可以在控制台 看到檔案來源 ex: header{} ==> _header.scss
         //.pipe(cleanCSS({compatibility: 'ie10'}))  //壓縮省略,因為上方 sass({outputStyle: 'compressed'}) 已壓縮
         .pipe(dest('css'));
 }
