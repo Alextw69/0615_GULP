@@ -114,19 +114,19 @@ exports.minijs = ugjs;
 function concat_css(){               //  合併完直接壓縮 , 不產生合併檔 , 只產生壓縮檔
   return src('css/**/*.css')
   .pipe(concat('style.css'))
-  .pipe(cleanCSS({compatibility: 'ie10'}))
-  .pipe(dest('minicss'))             //  產生 css/minicss/style.css 檔
+  .pipe(cleanCSS({compatibility: 'ie10'}))  //  壓縮 , 及處理跨瀏覽器問題
+  .pipe(dest('minicss'))                    //  產生 css/minicss/style.css 檔
 }
-exports.all = series(concat_css);    //  順序執行
+exports.all = series(concat_css);           //  順序執行
 
 
     // 合併 + 壓縮css + 更改檔名          狀況三  狀況三  狀況三  狀況三  狀況三  狀況三  狀況三  狀況三  狀況三
     // === rename 更改檔案名稱 ===
-const rename = require('gulp-rename'); // 套件引入 require()
-function concat_css(){                 //  合併完直接壓縮 , 不產生合併檔 , 只產生壓縮檔
+const rename = require('gulp-rename');       // 套件引入 require()
+function concat_css(){                       //  合併完直接壓縮 , 不產生合併檔 , 只產生壓縮檔
   return src('css/**/*.css')
-  .pipe(concat('style.css'))           //  合併
-  .pipe(cleanCSS({compatibility: 'ie10'}))  //  壓縮
+  .pipe(concat('style.css'))                 //  合併
+  .pipe(cleanCSS({compatibility: 'ie10'}))   //  壓縮 , 及處理跨瀏覽器問題
   .pipe(rename({
          extname: '.min.css'
                       }))      //  更改副檔名 
@@ -148,12 +148,15 @@ exports.w = watchfile;  // gulp w  / ctol + c  (跳出監看)
 
 // =============================================================================
 
-const sass = require('gulp-sass');  // 套件引入 require()
+const sass = require('gulp-sass');            // 套件引入 require()
+const sourcemaps = require('gulp-sourcemaps');// 回朔到原本開發的檔案
 
 function sass_style() {
     return src('sass/*.scss')
-        .pipe(sass().on('error', sass.logError))  // on() , 為了顯示執行的錯誤資訊
-        .pipe(cleanCSS({compatibility: 'ie10'}))  //  壓縮
+        .pipe(sourcemaps.init())
+        .pipe(sass({outputStyle: 'compressed'}).on('error', sass.logError)) // on() , 為了顯示執行的錯誤資訊
+        .pipe(sourcemaps.write())
+        //.pipe(cleanCSS({compatibility: 'ie10'}))  //壓縮省略,因為上方 sass({outputStyle: 'compressed'}) 已壓縮
         .pipe(dest('css'));
 }
 // exports.styles = sass_style;
