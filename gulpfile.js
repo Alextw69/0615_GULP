@@ -15,7 +15,7 @@ function defaultTask(cb) {
 }
       exports.do = defaultTask;  // 執行指令 gulp do , exports 導出
 
-// =================================
+// ======================================================================================
 function missA(cb){
   console.log('任務Ａ');
   cb();                         //  cb()或者return的方式來告知gulp 此任務已經完成
@@ -33,7 +33,7 @@ function missB(cb){
 
     
 
-    // ==========================================
+    // =================================================================================
     //=======   合併 CSS 檔案  //   合併 JS檔案    ===============
     //  src(來源檔案).pipe(concat()).pipe(dest(目的地))
     //  * 代表所有
@@ -138,15 +138,16 @@ exports.all = series(concat_css);    //  順序執行
 
       // ====================================================================================
       // 監看任務 自動執行打包
-function watchfile(){
-    watch('css/**/*.css' ,concat_css) // 監看來源檔 , 執行的函式
-    // watch('js/**/*.js' ,任務)      // 可以同時監看 js ...
-}
+// function watchfile(){
+//     watch('css/**/*.css' ,concat_css) // 監看來源檔 , 執行的函式
+//     // watch('js/**/*.js' ,任務)      // 可以同時監看 js ...
+// }
 
-exports.w = watchfile;  // gulp w  / ctol + c  (跳出監看)
+// exports.w = watchfile;  // gulp w  / ctol + c  (跳出監看)
 
 
-// =============================================================================
+    // =============================================================================
+    // sourcemaps
 
 const sass = require('gulp-sass');            // 套件引入 require()
 const sourcemaps = require('gulp-sourcemaps');// 回朔到原本開發的檔案
@@ -159,14 +160,14 @@ function sass_style() {
         //.pipe(cleanCSS({compatibility: 'ie10'}))  //壓縮省略,因為上方 sass({outputStyle: 'compressed'}) 已壓縮
         .pipe(dest('css'));
 }
-// exports.styles = sass_style;
+exports.styles = sass_style;
 
-function watchsass(){  // 監看
-  watch(['sass/**/*.scss','sass/*.scss'] ,sass_style) // 監看來源檔 , 執行的函式
-  // watch('js/**/*.js' ,任務)      // 可以同時監看 js ...
-}
+// function watchsass(){  // 監看
+//   watch(['sass/**/*.scss','sass/*.scss'] ,sass_style) // 監看來源檔 , 執行的函式
+//   // watch('js/**/*.js' ,任務)      // 可以同時監看 js ...
+// }
 
-exports.styles = watchsass;  // gulp w  / ctol + c  (跳出監看)
+// exports.styles = watchsass;  
 
 
     // ===================================================================================
@@ -179,9 +180,42 @@ function html(){
         prefix: '@@',
         basepath: '@file'
     }))
-    .pipe(dest('dist'))     
+    .pipe(dest('./'))   // 打包的html,自動產生在"根目錄下"  ==> " ./ "   
 }
 exports.template = html;  // 自動產生一支 index.html , 在 dist/index.html
+
+function watch_sass_html(){  // 監看
+  watch(['sass/**/*.scss','sass/*.scss'] ,sass_style) // 監看 sass
+  watch(['dev/*.html','dev/**/*.html'] ,html)         // 監看 html
+  // watch('js/**/*.js' ,任務)      // 可以同時監看 js ...
+  // console.log('執行成功')
+}
+
+// exports.default = watch_sass_html;  // 指令 只需要 "gulp"
+
+
+    // ==================================================================
+    // 瀏覽器同步檢視 (整合 watch 監看 sass/html)
+const browserSync = require('browser-sync'); // 套件引入 require()
+const reload = browserSync.reload;           // 瀏覽器重啟
+
+function browser(done){
+  browserSync.init({
+    server: {
+        baseDir : "./",       // 來源檔 index.html 的存放路徑 "根目錄下"
+        index: 'index.html'   // 要開啟的預設檔案
+    },
+    port : 3000  
+  });
+  watch(['dev/sass/**/*.css' , 'dev/sass/*.scss'] , sass_style).on('change' , reload)
+  watch(['dev/*.html' , 'dev/**/*.html'] , html).on('change' , reload)
+  done();  // 監看 file 變動 , 會透過change事件 , 重新啟動 browser
+}
+
+// exports.default = series(cleanfile ,browser);
+exports.default = browser;  // http://localhost:3001   ,    http://localhost:3000
+
+
 
 
 
