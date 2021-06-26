@@ -206,7 +206,7 @@ function browser(done){
     server: {
         baseDir : "dist",        // 上線使用 上線使用 上線使用 上線使用 ,  瀏覽器的根目錄 "dist"
         // baseDir : "./",       // 來源檔 index.html 的存放路徑 "根目錄下" ==>  "./"
-        index: 'main.html'      // 要開啟的預設檔案
+        index: 'index.html'      // 要開啟的預設檔案
     },
     port : 3000  
   });

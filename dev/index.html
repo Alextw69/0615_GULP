@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/style.css">
   <title>Document</title>
 </head>
 <body>
@@ -37,7 +38,12 @@
       <li>npm i gulp-sourcemaps  --save-dev  (SourceMap 讓 css 文件可以追朔 sass)</li>
       <li>npm install --save-dev gulp-file-include  (HTML 合併)</li>
       <li>npm install browser-sync --save-dev  (瀏覽器同步檢視)</li>
-      <li></li>
+      <li>package.json/scripts , 變更   "scripts": {
+                                                      "1.安裝套件": "npm install",
+                                                      "2.執行自動化": "gulp",
+                                                      "3.壓縮js": "gulp minijs",
+                                                      "4.壓縮圖片": "gulp minify_img"
+                                                  }, </li>
       <li></li>
       <li></li>
       <li></li>
@@ -45,5 +51,6 @@
       <li></li>
       <li></li>
     </ul>
-</body>
+      @@include('layout/footer.html');
+  </body>
 </html>
