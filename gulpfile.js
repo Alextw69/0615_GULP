@@ -171,7 +171,7 @@ exports.styles = sass_style;
 
 
 // 解決跨瀏覽器的問題  [打包用]
-const autoprefixer = require('gulp-autoprefixer') // 解決跨瀏覽器的問題
+const autoprefixer = require('gulp-autoprefixer') // 解決跨瀏覽器的問題(特別是手機版)
 function prefixer(){
   return src('dist/css/*.css')
   .pipe(autoprefixer({
@@ -208,6 +208,19 @@ function watch_sass_html(){  // 監看
 }
 // exports.default = watch_sass_html;  // 指令 只需要 "gulp"
 
+
+    // ===================================================================
+    // ======== babel es6 -> es5  (也是跨瀏覽器的問題)================
+const babel = require('gulp-babel');
+
+  function babel5(){
+      return src('dev/js/c.js')
+      .pipe(babel({
+        presets: ['@babel/env']
+       }))
+      .pipe(dest('dist/js'))
+  }
+  exports.jsbabel = babel5;
 
 
     // =======================================================================

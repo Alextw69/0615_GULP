@@ -1,3 +1,4 @@
-var c = 30;
-var d = a+b+c;
-console.log(d);
+//es6
+const man = (person) => {
+  return person + '去上課'  
+}
