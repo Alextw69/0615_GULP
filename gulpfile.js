@@ -155,8 +155,8 @@ const sourcemaps = require('gulp-sourcemaps');    // 回朔到原本開發的檔
 function sass_style() {
     return src('dev/sass/*.scss')
         .pipe(sourcemaps.init())  // 可以在控制台 看到檔案來源 ex: header{} ==> _header.scss
-        // .pipe(sass({outputStyle: 'compressed'}).on('error', sass.logError)) // on() , 為了顯示執行的錯誤資訊  // 壓縮的 compressed
-        .pipe(sass({outputStyle: 'expanded'}).on('error', sass.logError)) // on() , 為了顯示執行的錯誤資訊   //  沒有壓縮的  expanded 
+        .pipe(sass({outputStyle: 'compressed'}).on('error', sass.logError)) // on() , 為了顯示執行的錯誤資訊  // 壓縮的 compressed
+        // .pipe(sass({outputStyle: 'expanded'}).on('error', sass.logError)) // on() , 為了顯示執行的錯誤資訊   //  沒有壓縮的  expanded 
         .pipe(sourcemaps.write()) // 可以在控制台 看到檔案來源 ex: header{} ==> _header.scss
         //.pipe(cleanCSS({compatibility: 'ie10'}))  //壓縮省略此行,因為上方 sass({outputStyle: 'compressed'}) 已壓縮
         .pipe(dest('dist/css')); // 產生一支 dist/css 檔
@@ -211,7 +211,7 @@ function watch_sass_html(){  // 監看
 
     // ===================================================================
     // ======== babel es6 -> es5  (也是跨瀏覽器的問題)================
-const babel = require('gulp-babel');
+const babel = require('gulp-babel');  // [打包用]
 
   function babel5(){
       return src('dev/js/c.js')
