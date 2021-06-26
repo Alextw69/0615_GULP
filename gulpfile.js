@@ -175,7 +175,8 @@ exports.styles = sass_style;
 const fileinclude = require('gulp-file-include'); // 套件引入 require()
 
 function html(){
-    return src(['dev/*.html','dev/**/*.html'])   // 來源路徑
+    // return src(['dev/*.html','dev/**/*.html'])   // 來源路徑
+    return src(['dev/*.html'])   // 打包的 *.html 來源路徑
     .pipe(fileinclude({                          // 函式
         prefix: '@@',
         basepath: '@file'
