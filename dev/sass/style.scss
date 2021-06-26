@@ -1,20 +1,41 @@
 @import 'layout/header';
+@import 'layout/footer';
 body {
   margin: 0;
   background-color: rgb(167, 194, 45);
   .wrapper{
       width: 100%;
       min-width: 1100px;
-      display: flex;
+      // display: flex;
       header {
         .logo {
-           font-size: 100px;
-           color: red;
-           background-color: green;
+           font-size: 110px;
+           color: yellow;
+           background-color: rgb(25, 102, 25);
+           margin: 20px;
         }
       }
       .item{
           justify-self: start;
+      }
+      footer{
+        // position: relative;
+        // bottom: 0;
+        // left: 0;
+        font-size: 50px;
+        color:white;
+        background-color: grey;
+        height: 500px;
+        padding: 20px;
+        .logo{
+          font-size: 110px;
+          color: yellow;
+          background-color: red;
+          margin: 20px;
+          display: block;
+          width: 200px;
+          
+       }
       }
   }
 }

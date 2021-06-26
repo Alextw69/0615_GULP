@@ -181,7 +181,8 @@ function html(){
         prefix: '@@',
         basepath: '@file'
     }))
-    .pipe(dest('./'))   // 打包的html,自動產生在"根目錄下"  ==> " ./ "   
+    // .pipe(dest('./'))   // 打包的html,自動產生在"根目錄下"  ==> " ./ "   
+    .pipe(dest('dist'))   // 打包的html,自動產生在"dist/*.html"    
 }
 exports.template = html;  // 自動產生一支 index.html , 在 dist/index.html
 
@@ -203,8 +204,9 @@ const reload = browserSync.reload;           // 瀏覽器重啟
 function browser(done){
   browserSync.init({
     server: {
-        baseDir : "./",       // 來源檔 index.html 的存放路徑 "根目錄下"
-        index: 'index.html'   // 要開啟的預設檔案
+        baseDir : "dist",        // 上線使用 上線使用 上線使用 上線使用 ,  瀏覽器的根目錄 "dist"
+        // baseDir : "./",       // 來源檔 index.html 的存放路徑 "根目錄下" ==>  "./"
+        index: 'main.html'      // 要開啟的預設檔案
     },
     port : 3000  
   });
