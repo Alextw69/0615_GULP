@@ -192,8 +192,40 @@ function watch_sass_html(){  // 監看
   // watch('js/**/*.js' ,任務)      // 可以同時監看 js ...
   // console.log('執行成功')
 }
-
 // exports.default = watch_sass_html;  // 指令 只需要 "gulp"
+
+
+
+    // =======================================================================
+    // =========== 壓縮圖片   Minify PNG, JPEG, GIF and SVG images ============
+const imagemin = require('gulp-imagemin');
+
+function min_images(){
+    return src('dev/images/*.*')  // *.*  => 指所有圖片的格式
+    //.pipe(imagemin())  // 一般壓縮
+    .pipe(imagemin([
+        imagemin.mozjpeg({quality: 70, progressive: true}) // 壓縮品質(特殊壓縮) 
+        // imagemin.gifsicle({interlaced: true}),     // gif 壓縮
+        // imagemin.optipng({optimizationLevel: 5}),  // png 壓縮
+        // imagemin.svgo({                            // svg 壓縮
+        //     plugins: [
+        //         {removeViewBox: true},
+        //         {cleanupIDs: false}
+        //     ]})  // 參考 https://www.npmjs.com/package/gulp-imagemin
+    ])) // quality 越小 , 壓縮的品質越差
+    .pipe(dest('dist/images'))
+}
+exports.minify_img = min_images;
+
+
+
+      // ================================================================
+      // ================ 清除舊檔案 (ex:file更名後,產生的舊檔案)============
+// const clean = require('gulp-clean');
+// function cleanfile(){
+//     return src(['dist/*.*' , 'dist/**/*.*'], { read : false })
+//     .pipe(clean({force : true }))
+// }
 
 
     // ==================================================================
@@ -215,7 +247,7 @@ function browser(done){
   done();  // 監看 file 變動 , 會透過change事件 , 重新啟動 browser
 }
 
-// exports.default = series(cleanfile ,browser);
+// exports.default = series(cleanfile ,browser); // 先清除舊檔案 , 再開啟server
 exports.default = browser;  // http://localhost:3001   ,    http://localhost:3000
 
 
