@@ -169,6 +169,21 @@ function watchsass(){  // 監看
 exports.styles = watchsass;  // gulp w  / ctol + c  (跳出監看)
 
 
+    // ===================================================================================
+    // gulp-file-include 合併 html
+const fileinclude = require('gulp-file-include'); // 套件引入 require()
+
+function html(){
+    return src(['dev/*.html','dev/**/*.html'])   // 來源路徑
+    .pipe(fileinclude({                          // 函式
+        prefix: '@@',
+        basepath: '@file'
+    }))
+    .pipe(dest('dist'))     
+}
+exports.template = html;  // 自動產生一支 index.html , 在 dist/index.html
+
+
 
 
 
