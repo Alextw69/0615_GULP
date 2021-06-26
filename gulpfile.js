@@ -147,27 +147,41 @@ exports.all = series(concat_css);    //  順序執行
 
 
     // =============================================================================
-    // sourcemaps
+    // css / sass 編譯 / 解決跨瀏覽器的問題
 
-const sass = require('gulp-sass');            // 套件引入 require()
-const sourcemaps = require('gulp-sourcemaps');// 回朔到原本開發的檔案
+const sass = require('gulp-sass');                // 套件引入 require()
+const sourcemaps = require('gulp-sourcemaps');    // 回朔到原本開發的檔案
 
 function sass_style() {
     return src('dev/sass/*.scss')
         .pipe(sourcemaps.init())  // 可以在控制台 看到檔案來源 ex: header{} ==> _header.scss
-        .pipe(sass({outputStyle: 'compressed'}).on('error', sass.logError)) // on() , 為了顯示執行的錯誤資訊
+        // .pipe(sass({outputStyle: 'compressed'}).on('error', sass.logError)) // on() , 為了顯示執行的錯誤資訊  // 壓縮的 compressed
+        .pipe(sass({outputStyle: 'expanded'}).on('error', sass.logError)) // on() , 為了顯示執行的錯誤資訊   //  沒有壓縮的  expanded 
         .pipe(sourcemaps.write()) // 可以在控制台 看到檔案來源 ex: header{} ==> _header.scss
-        //.pipe(cleanCSS({compatibility: 'ie10'}))  //壓縮省略,因為上方 sass({outputStyle: 'compressed'}) 已壓縮
-        .pipe(dest('dist/css'));
+        //.pipe(cleanCSS({compatibility: 'ie10'}))  //壓縮省略此行,因為上方 sass({outputStyle: 'compressed'}) 已壓縮
+        .pipe(dest('dist/css')); // 產生一支 dist/css 檔
 }
 exports.styles = sass_style;
 
 // function watchsass(){  // 監看
 //   watch(['dev/sass/**/*.scss','dev/sass/*.scss'] ,sass_style) // 監看來源檔 , 執行的函式
-//   // watch('dev/js/**/*.js' ,任務)      // 可以同時監看 js ...
+//   watch('dev/js/**/*.js' ,任務)      // 可以同時監看 js ...
 // }
+// exports.styles = watchsass; 
 
-// exports.styles = watchsass;  
+
+// 解決跨瀏覽器的問題  [打包用]
+const autoprefixer = require('gulp-autoprefixer') // 解決跨瀏覽器的問題
+function prefixer(){
+  return src('dist/css/*.css')
+  .pipe(autoprefixer({
+      cascade: false
+  }))
+  .pipe(dest('dist/css/prefix'))
+}
+exports.prefix = prefixer;
+
+
 
 
     // ===================================================================================
