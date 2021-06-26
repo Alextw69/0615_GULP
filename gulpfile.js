@@ -153,18 +153,18 @@ const sass = require('gulp-sass');            // 套件引入 require()
 const sourcemaps = require('gulp-sourcemaps');// 回朔到原本開發的檔案
 
 function sass_style() {
-    return src('sass/*.scss')
+    return src('dev/sass/*.scss')
         .pipe(sourcemaps.init())  // 可以在控制台 看到檔案來源 ex: header{} ==> _header.scss
         .pipe(sass({outputStyle: 'compressed'}).on('error', sass.logError)) // on() , 為了顯示執行的錯誤資訊
         .pipe(sourcemaps.write()) // 可以在控制台 看到檔案來源 ex: header{} ==> _header.scss
         //.pipe(cleanCSS({compatibility: 'ie10'}))  //壓縮省略,因為上方 sass({outputStyle: 'compressed'}) 已壓縮
-        .pipe(dest('css'));
+        .pipe(dest('dist/css'));
 }
 exports.styles = sass_style;
 
 // function watchsass(){  // 監看
-//   watch(['sass/**/*.scss','sass/*.scss'] ,sass_style) // 監看來源檔 , 執行的函式
-//   // watch('js/**/*.js' ,任務)      // 可以同時監看 js ...
+//   watch(['dev/sass/**/*.scss','dev/sass/*.scss'] ,sass_style) // 監看來源檔 , 執行的函式
+//   // watch('dev/js/**/*.js' ,任務)      // 可以同時監看 js ...
 // }
 
 // exports.styles = watchsass;  
@@ -186,7 +186,7 @@ function html(){
 exports.template = html;  // 自動產生一支 index.html , 在 dist/index.html
 
 function watch_sass_html(){  // 監看
-  watch(['sass/**/*.scss','sass/*.scss'] ,sass_style) // 監看 sass
+  watch(['dev/sass/**/*.scss','dev/sass/*.scss'] ,sass_style) // 監看 sass
   watch(['dev/*.html','dev/**/*.html'] ,html)         // 監看 html
   // watch('js/**/*.js' ,任務)      // 可以同時監看 js ...
   // console.log('執行成功')
