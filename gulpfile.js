@@ -143,12 +143,11 @@ exports.all = series(concat_css);    //  順序執行
 //     // watch('js/**/*.js' ,任務)      // 可以同時監看 js ...
 // }
 
-// exports.w = watchfile;  // gulp w  / ctol + c  (跳出監看)
+// exports.w = watchfile;  // gulp w  
 
 
     // =============================================================================
     // css / sass 編譯 / 解決跨瀏覽器的問題
-
 const sass = require('gulp-sass');                // 套件引入 require()
 const sourcemaps = require('gulp-sourcemaps');    // 回朔到原本開發的檔案
 
@@ -170,7 +169,7 @@ exports.styles = sass_style;
 // exports.styles = watchsass; 
 
 
-// 解決跨瀏覽器的問題  [打包用]
+// 解決 css 跨瀏覽器的問題  [打包用]
 const autoprefixer = require('gulp-autoprefixer') // 解決跨瀏覽器的問題(特別是手機版)
 function prefixer(){
   return src('dist/css/*.css')
@@ -185,12 +184,12 @@ exports.prefix = prefixer;
 
 
     // ===================================================================================
-    // gulp-file-include 合併 html
+    // 合併 html
 const fileinclude = require('gulp-file-include'); // 套件引入 require()
 
 function html(){
     // return src(['dev/*.html','dev/**/*.html'])   // 來源路徑
-    return src(['dev/*.html'])   // 打包的 *.html 來源路徑
+    return src('dev/*.html')   // 打包的 *.html 來源路徑
     .pipe(fileinclude({                          // 函式
         prefix: '@@',
         basepath: '@file'
@@ -200,17 +199,30 @@ function html(){
 }
 exports.template = html;  // 自動產生一支 index.html , 在 dist/index.html
 
-function watch_sass_html(){  // 監看
-  watch(['dev/sass/**/*.scss','dev/sass/*.scss'] ,sass_style) // 監看 sass
-  watch(['dev/*.html','dev/**/*.html'] ,html)         // 監看 html
-  // watch('js/**/*.js' ,任務)      // 可以同時監看 js ...
-  // console.log('執行成功')
-}
+// function watch_sass_html(){  // 監看
+//   watch(['dev/sass/**/*.scss','dev/sass/*.scss'] ,sass_style) // 監看 sass
+//   watch(['dev/*.html','dev/**/*.html'] ,html)         // 監看 html
+// }
 // exports.default = watch_sass_html;  // 指令 只需要 "gulp"
 
 
+
+    //============= 圖片搬家 跟 js 搬家
+function img_mv(){
+  return src(['dev/images/*.*' , 'dev/images/**/*.*' ]) // 可能會有 2 層
+  .pipe(dest('dist/images'))
+}
+
+function js_mv(){
+  return src('dev/js/*.js')
+  .pipe(dest('dist/js'))
+}
+
+
+
+
     // ===================================================================
-    // ======== babel es6 -> es5  (也是跨瀏覽器的問題)================
+    // ======== babel es6 -> es5  ( js 跨瀏覽器的問題) ================
 const babel = require('gulp-babel');  // [打包用]
 
   function babel5(){
@@ -250,7 +262,8 @@ exports.minify_img = min_images;
       // ================ 清除舊檔案 (ex:file更名後,產生的舊檔案)============
 // const clean = require('gulp-clean');
 // function cleanfile(){
-//     return src(['dist/*.*' , 'dist/**/*.*'], { read : false })
+//    // return src(['dist/*.*' , 'dist/**/*.*'], { read : false }) // 清除指定資料
+//     return src(['dist'], { read : false }) // 清除 dist/ 全部資料
 //     .pipe(clean({force : true }))
 // }
 
@@ -271,6 +284,8 @@ function browser(done){
   });
   watch(['dev/sass/**/*.css' , 'dev/sass/*.scss'] , sass_style).on('change' , reload)
   watch(['dev/*.html' , 'dev/**/*.html'] , html).on('change' , reload)
+  watch(['dev/images/*.*' , 'dev/images/**/*.*' ] , img_mv).on('change' , reload)
+  watch('dev/js/*.js' , js_mv).on('change' , reload)
   done();  // 監看 file 變動 , 會透過change事件 , 重新啟動 browser
 }
 
