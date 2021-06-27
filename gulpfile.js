@@ -169,14 +169,22 @@ exports.styles = sass_style;
 // exports.styles = watchsass; 
 
 
-// 解決 css 跨瀏覽器的問題  [打包用]
+// css 壓縮 | autoprefix 跨瀏覽器   //  解決 css 跨瀏覽器的問題  [打包用]
 const autoprefixer = require('gulp-autoprefixer') // 解決跨瀏覽器的問題(特別是手機版)
+const cleanCSS = require('gulp-clean-css');       // css壓縮
+const rename = require('gulp-rename');
+
 function prefixer(){
   return src('dist/css/*.css')
+  .pipe(cleanCSS({compatibility: 'ie10'}))
   .pipe(autoprefixer({
       cascade: false
   }))
-  .pipe(dest('dist/css/prefix'))
+  .pipe(rename({
+    extname: '.min.css'
+  })) // 改副檔名
+  .pipe(dest('dist/css')) 
+     // .pipe(dest('dist/css/prefix'))
 }
 exports.prefix = prefixer;
 
@@ -222,17 +230,20 @@ function js_mv(){
 
 
     // ===================================================================
-    // ======== babel es6 -> es5  ( js 跨瀏覽器的問題) ================
+    // ======== js 壓縮 | js es6 -> es5   ( js 跨瀏覽器的問題) ================
+const uglify = require('gulp-uglify');  
 const babel = require('gulp-babel');  // [打包用]
 
-  function babel5(){
-      return src('dev/js/c.js')
-      .pipe(babel({
-        presets: ['@babel/env']
-       }))
-      .pipe(dest('dist/js'))
-  }
-  exports.jsbabel = babel5;
+function babel5(){
+    return src('dev/js/*.js')
+    .pipe(babel({
+      presets: ['@babel/env']
+      }))            // es6 - > es5
+    .pipe(uglify()) // 壓縮js
+    .pipe(dest('dist/js'))
+}
+exports.jsbabel = babel5;
+
 
 
     // =======================================================================

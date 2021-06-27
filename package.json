@@ -27,8 +27,9 @@
     "2.執行(dev) SASS": "gulp styles",
     "3.執行(dev) HTML": "gulp template",
     "4.開啟 server": "gulp",
-    "5.壓縮 (打包) js": "gulp minijs",
-    "6.壓縮 (打包)圖片": "gulp minify_img"
+    "5.壓縮 js | es6 -> es5": "gulp jsbabel",
+    "6.壓縮 css | | autoprefix": "gulp prefix",
+    "7.壓縮 images":"gulp minify_img "
   },
   "keywords": [],
   "author": "",

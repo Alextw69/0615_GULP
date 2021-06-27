@@ -100,7 +100,7 @@ function ugjs(){
     return src('dev/js/*.js')
     .pipe(babel({
         presets: ['@babel/env']
-       }))// es6 - > es5
+       }))          // es6 - > es5
     .pipe(uglify()) // 壓縮js
     .pipe(dest('dist/js'))
 }
